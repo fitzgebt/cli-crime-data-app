@@ -10,37 +10,58 @@ class Api
 
 
     def self.call_api(state, offense)
+        master_array = []
+
         offense_count = HTTParty.get("https://api.usa.gov/crime/fbi/sapi/api/data/nibrs/#{offense}/offense/states/#{state}/COUNT?API_KEY=#{@@api_key}")
         offense_count_hash = offense_count["results"].collect do |hash|
-            var = {offense_count: hash["offense_count"], data_year: hash["data_year"]}
+            var = {data_year: hash["data_year"], offense_count: hash["offense_count"]}
         end
+
+        master_array = offense_count_hash
         
         victim_age = HTTParty.get("https://api.usa.gov/crime/fbi/sapi/api/data/nibrs/#{offense}/victim/states/#{state}/age?API_KEY=#{@@api_key}")
         victim_age_hash = victim_age["results"].collect do |hash|
-            var = {unknown_age: hash["unknown"], age_0_9: hash["range_0_9"], age_10_19: hash["range_10_19"], age_20_29: hash["range_20_29"], age_30_39: hash["range_30_39"], age_40_49: hash["range_40_49"], age_50_59: hash["range_50_59"], age_60_69: hash["range_60_69"], age_70_79: hash["range_70_79"], age_80_89: hash["range_80_89"], age_90_99: hash["range_90_99"]}
+            var = {data_year: hash["data_year"], unknown_age: hash["unknown"], age_0_9: hash["range_0_9"], age_10_19: hash["range_10_19"], age_20_29: hash["range_20_29"], age_30_39: hash["range_30_39"], age_40_49: hash["range_40_49"], age_50_59: hash["range_50_59"], age_60_69: hash["range_60_69"], age_70_79: hash["range_70_79"], age_80_89: hash["range_80_89"], age_90_99: hash["range_90_99"]}
+            master_array.each do |hash2| 
+                if hash2[:data_year] == var[:data_year]
+                    hash2.merge!(var) 
+                end
+            end
         end
 
         victim_race = HTTParty.get("https://api.usa.gov/crime/fbi/sapi/api/data/nibrs/#{offense}/victim/states/#{state}/race?API_KEY=#{@@api_key}")
         victim_race_hash = victim_race["results"].collect do |hash|
-            var = {asian: hash["asian"], native_hawaiian: hash["native_hawaiian"], black: hash["black"], american_indian: hash["american_indian"], unknown_race: hash["unknown"], white: hash["white"]}
+            var = {data_year: hash["data_year"], asian: hash["asian"], native_hawaiian: hash["native_hawaiian"], black: hash["black"], american_indian: hash["american_indian"], unknown_race: hash["unknown"], white: hash["white"]}
+            master_array.each do |hash2| 
+                if hash2[:data_year] == var[:data_year]
+                    hash2.merge!(var) 
+                end
+            end
         end
 
         victim_ethnicity = HTTParty.get("https://api.usa.gov/crime/fbi/sapi/api/data/nibrs/#{offense}/victim/states/#{state}/ethnicity?API_KEY=#{@@api_key}")
         victim_ethnicity_hash = victim_ethnicity["results"].collect do |hash|
-            var = {hispanic: hash["hispanic"], not_hispanic: hash["not_hispanic"]}
+            var = {data_year: hash["data_year"], hispanic: hash["hispanic"], not_hispanic: hash["not_hispanic"]}
+            master_array.each do |hash2| 
+                if hash2[:data_year] == var[:data_year]
+                    hash2.merge!(var) 
+                end
+            end
         end
 
         victim_sex = HTTParty.get("https://api.usa.gov/crime/fbi/sapi/api/data/nibrs/#{offense}/victim/states/#{state}/sex?API_KEY=#{@@api_key}")
         victim_sex_hash = victim_sex["results"].collect do |hash|
-            var = {male: hash["male_count"], female: hash["female_count"]}
+            var = {data_year: hash["data_year"], male: hash["male_count"], female: hash["female_count"]}
+            master_array.each do |hash2| 
+                if hash2[:data_year] == var[:data_year]
+                    hash2.merge!(var) 
+                end
+            end
         end
-
         
-            binding.pry
-        
-        CrimeData.new(hash)
     end
 
+    CrimeData.new(master_array)
 end
 
 # victim age attributs {"results"=> [{"unknown"=>0, "range_0_9"=>0, "range_10_19"=>30, "range_20_29"=>96, "range_30_39"=>14, "range_40_49"=>25, "range_50_59"=>16, "range_60_69"=>5, "range_70_79"=>7, "range_80_89"=>4, "range_90_99"=>0, "data_year"=>2006}, ... ]

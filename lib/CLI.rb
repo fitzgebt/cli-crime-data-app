@@ -12,6 +12,7 @@ class Cli
         self.gather_offense(@state)
         # return readable list of requested state/offenses
         puts "Do you wish to see victim demographics related to your last search?"
+        
 
     end
 
