@@ -12,6 +12,8 @@ class Api
     def self.call_api(state, offense, variable = "age")
         offenses_count = HTTParty.get("https://api.usa.gov/crime/fbi/sapi/api/data/nibrs/#{offense}/offense/states/#{state}/COUNT?API_KEY=#{@@api_key}")
         victim_demographics = HTTParty.get(@@victim_demographics)
+        hash = {}
+        CrimeData.new(hash)
     end
 
     
