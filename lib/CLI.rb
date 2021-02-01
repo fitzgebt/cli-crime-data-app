@@ -15,6 +15,7 @@ class Cli
     def gather_offense(state)
         user_state = state
         offense = gets.strip
+        Api.call_api(state, offense)
     end
 
 
