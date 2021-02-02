@@ -9,9 +9,27 @@ class CrimeData
             self.send("#{key}=", value)
         end
         @@all << self
+        binding.pry
     end
 
-    
+    def self.all
+        @@all
+    end
+
+    def self.new_search?(state, offense)
+        self.all.each do |instance|
+            if instance.include?(instance.state) && instance.include?(instance.offense)
+                true # pull requested year from another method
+            else
+                Api.call_api(state, offense) # or maybe return false, and create the api instnace from CLI?
+            end
+        end
+
+
+
+    end
+
+    # need to create methods for calling attributes of the instance?
 
 
 end
