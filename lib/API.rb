@@ -14,7 +14,7 @@ class Api
 
         offense_count = HTTParty.get("https://api.usa.gov/crime/fbi/sapi/api/data/nibrs/#{offense}/offense/states/#{state}/COUNT?API_KEY=#{@@api_key}")
         offense_count_hash = offense_count["results"].collect do |hash|
-            var = {data_year: hash["data_year"], offense_type: "#{offense}", offense_count: hash["offense_count"]}
+            var = {location: "#{state}", data_year: hash["data_year"], offense_type: "#{offense}", offense_count: hash["offense_count"]}
         end
 
         master_array = offense_count_hash

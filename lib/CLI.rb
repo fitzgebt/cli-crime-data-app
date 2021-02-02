@@ -32,7 +32,8 @@ class Cli
         offense = gets.strip
         if offense_list(offense) == true
             @offense = offense
-            # check if new search option(@state, @offense) 
+            # Api.call_api(@state, @offense)
+            CrimeData.new_search?(@state, @offense) ? CrimeData.display_state_and_offense(@state, @offense) : Api.call_api(state, offense)
         else
             offense_output
         end
@@ -77,13 +78,12 @@ class Cli
     def options
         puts "Would you like to see another State, Offense or Year?"
         input = gets.strip
-        binding.pry
         if input == "State" || input == "state" || input == "s" || input == "STATE" || input == "S"
             gather_state
         elsif input == "Offense" || input == "offense" || input == "o" || input == "OFFENSE" || input == "O"
             gather_offense
         elsif input == "Year" || input == "year" || input == "y" || input == "YEAR" || input == "y" || is_integer?(input) == true
-            if input.is_integer? == true && input.to_i.between?(2006,2019)
+            if is_integer?(input) == true && input.to_i.between?(2006,2019)
                 @year = input
                 # CrimeData.offense_by_year(@year)
             else 
