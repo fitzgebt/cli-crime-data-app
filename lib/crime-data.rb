@@ -1,10 +1,14 @@
 class CrimeData
-    attr_accessor :data_year, :offense_count
 
     @@all = []
 
-    def initialize(master_array)
-        
+    def initialize(hash)
+        hash.each do |key, value|
+            self.class.attr_accessor(key)
+            self.send("#{key}=", value)
+            
+        end
+        @@all << self
     end
 
     

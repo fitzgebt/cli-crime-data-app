@@ -58,10 +58,14 @@ class Api
                 end
             end
         end
+        send_to_crime_data(master_array)
     end
-    
 
-    # CrimeData.new(master_array)
+    def self.send_to_crime_data(master_array)
+        master_array.each do |hash|
+            CrimeData.new(hash)
+        end
+    end
 end
 
 # victim age attributs {"results"=> [{"unknown"=>0, "range_0_9"=>0, "range_10_19"=>30, "range_20_29"=>96, "range_30_39"=>14, "range_40_49"=>25, "range_50_59"=>16, "range_60_69"=>5, "range_70_79"=>7, "range_80_89"=>4, "range_90_99"=>0, "data_year"=>2006}, ... ]

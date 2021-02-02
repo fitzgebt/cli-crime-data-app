@@ -2,33 +2,35 @@ class Cli
 
     @state = ""
     @offense = ""
+    @year = ""
 
     def start
         puts "This app gathers information on crimes committed from the FBI's Uniform Crime Report (UCR)."
         puts "Information displayed will have occurred between 2006 and 2019."
         us_states_output
         puts "Please select a State from the above list:"
-        self.gather_state
+        gather_state
         offense_output
         puts "Please select an offense to view more information:"
-        self.gather_offense(@state)
-        # return readable list of requested state/offenses
+        gather_offense                                     # takes @state and @offense and calls API
         puts "Data for tis offense is available from 2006 - 2019."
         puts "For which year would you like to see data?"
-        self.gather_year
+        gather_year                                        # calls CrimeData.offense_by_year(@year)
+        puts "Would you like to see another State, Offense or Year?"
+        options
+        
 
-        
-        
 
     end
 
     def gather_state
+        binding.pry
         @state = gets.strip
     end
 
-    def gather_offense(state)
+    def gather_offense
         @offense = gets.strip
-        # Api.call_api(@state, @offense)
+        Api.call_api(@state, @offense)
     end
 
     def gather_year
@@ -54,8 +56,40 @@ class Cli
         states_output.each {|state| puts state}
     end
 
+    def options
+        input = gets.strip
+        if input == "State" || input == "state" || input == "s" || input == "STATE" || input == "S"
+            gather_state
+        elsif input == "Offense" || input == "offense" || input == "o" || input == "OFFENSE" || input == "O"
+            gather_offense
+        elsif input == "Year" || input == "year" || input == "y" || input == "YEAR" || input == "y" || input.is_integer? == true
+            if input.is_integer? == true
+                @year = input
+                # CrimeData.offense_by_year(@year)
+            else 
+                gather_year
+            end
+        else
+            "Please enter 'state' or 'offense' or 'year':"
+        end
+        
+    end
+
+    def is_integer?
+        self.length == 4 ? self.to_i.to_s == self : false
+    end
+
 
 
 end
 
 
+
+
+# if input == "yes" || input == "y" || input == "Yes" || input == "YES" || input == "Y"
+#     true
+# elsif input == "no" || input == "n" || input == "No" || input == "NO" || input == "N"
+#     false
+# else
+#     "Please enter 'yes' or 'no':"
+# end
