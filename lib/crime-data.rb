@@ -1,8 +1,14 @@
 class CrimeData
-    attr_accessor :offense_count, :data_year
+    attr_accessor :data_year, :offense_count
 
-    # def initialize(hash)
-    # end
+    @@all = []
+
+    def initialize(master_array)
+        
+    end
+
+    
+
 
 end
 
