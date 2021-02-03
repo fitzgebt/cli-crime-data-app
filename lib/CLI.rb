@@ -164,27 +164,26 @@ class Cli
 
     def victim_race(instance)
         display_basic_info(instance)
-
-
+        puts "Asian: #{instance.asian}, Native Hawaiian: #{instance.native_hawaiian}, Black: #{instance.black}, White: #{instance.white}"
     end
 
     def victim_ethnicity(instance)
         display_basic_info(instance)
-
-
+        puts "Victim Ethnicity: Hispanic: #{instance.hispanic}, Non-Hispanic: #{instance.not_hispanic}"
     end
 
     def victim_sex(instance)
         display_basic_info(instance)
-
-
+        puts "Victim Sex: Female: #{instance.female_count}, Male: #{instance.male_count}"
     end
 
     def all_stats(instance)
         display_basic_info(instance)
-
-
-    end
+        victim_age_range(instance)
+        victim_race(instance)
+        victim_ethnicity(instance)
+        victim_sex(instance)
+        end
 end
 
 
