@@ -67,13 +67,15 @@ class Cli
             @year = year.to_i
             if CrimeData.new_search?(@state, @offense)
                 instance = CrimeData.offense_by_year(@state, @offense, @year)
-                # binding.pry
                 display_basic_info(instance)
+                puts "Would you like to view statistics related to victim demographics?"
+                yes_or_no(instance)
             else
                 Api.call_api(@state, @offense)
                 instance = CrimeData.offense_by_year(@state, @offense, @year)
                 display_basic_info(instance)
-                binding.pry
+                puts "Would you like to view statistics related to victim demographics?"
+                yes_or_no(instance)
             end
         else
             gather_year
@@ -109,14 +111,10 @@ class Cli
     end
 
     def display_basic_info(instance)
-        # binding.pry
         puts "State: #{instance.location}"
         puts "Offense: #{instance.offense_type}"
         puts "Occurances: #{instance.offense_count}"
         puts "Year: #{instance.data_year}"
-        puts "Would you like to view statistics related to victim demographics?"
-        yes_or_no(instance)
-        
     end
 
     def yes_or_no(instance)
@@ -142,7 +140,6 @@ class Cli
         input = gets.strip
         instance_array = [instance.location, instance.year, instance.offense_type, instance.offenses_count]
         if input == "1" || input == "A" || input == "a" || input == "Age" || input == "age" 
-            puts "Which age range would you like statistics for?"
             instance_array << age_range(instance)
             # return instance array with all searches related to this instance
         elsif input == "2" || input == "R" || input == "r" || input == "Race" || input == "race"
@@ -158,18 +155,34 @@ class Cli
     end
 
     def victim_age_range(instance)
-
+        display_basic_info(instance)
+        puts "Victim Age: Unknown: #{instance.unknown}, 0-9yrs: #{instance.range_0_9}, 10-19yrs: #{instance.range_10_19}"
+        puts "Victim Age: 20-29yrs: #{instance.range_20_29}, 30-39yrs: #{instance.range_30_39}, 40-49yrs: #{instance.range_40_49}"
+        puts "Victim Age: 50-59yrs: #{instance.range_50_59}, 60-69yrs: #{instance.range_60_69}, 70-79yrs: #{instance.range_70_79}"
+        puts "Victim Age: 80-89yrs: #{instance.range_80_89}, 90-99yrs: #{instance.range_90_99}"
     end
 
     def victim_race(instance)
+        display_basic_info(instance)
+
 
     end
 
     def victim_ethnicity(instance)
+        display_basic_info(instance)
+
 
     end
 
     def victim_sex(instance)
+        display_basic_info(instance)
+
+
+    end
+
+    def all_stats(instance)
+        display_basic_info(instance)
+
 
     end
 end
