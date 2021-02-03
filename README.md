@@ -1,7 +1,7 @@
-# Project Title
+# CLI - CrimeData App
 
 This program utilizes several FBI Crime Data APIs, allowing the user
-to pull requested informtaion from the Uniform Crime Report (UCR) 
+to pull requested information from the Uniform Crime Report (UCR) 
 database. This program's scope looks at information at the state wide 
 level, and provides statistics on all offenses monitored by the UCR, 
 as well as victim demographic statistics for the requested offense.
