@@ -46,8 +46,7 @@ class Cli
         offense = gets.strip
         if offense_list(offense)
             @offense = offense
-            CrimeData.new_search?(@state, @offense) ? true : false  # why did I want this here?
-            gather_year            
+            collect_years_of_instances(@state, @offense)           
         else
             offense_output
         end
@@ -58,27 +57,35 @@ class Cli
         offense_types.include?(offense)
     end
 
-    def gather_year
+
+    def collect_years_of_instances(@state, @offense)
+        array = []
+        if CrimeData.new_search?(@state, @offense) == true
+            array = CrimeData.list_of_years(@state, @offense)
+            first = array.first
+            last = array.last
+            gather_year(first, last)
+        else
+            Api.call_api(@state, @offense)
+            array = CrimeData.list_of_years(@state, @offense)
+            first = array.first
+            last = array.last
+            gather_year(first, last)
+        end
+    end
+
+    def gather_year(first, last)
         # add dynamic years for years printed below utilizing CrimeData.new_search? method
-        puts "Data for this offense is available from 2006 - 2019."
+        puts "Data for this offense is available from #{first.to_i} - #{last.to_i}."
         puts "For which year would you like to see data?"
         year = gets.strip
-        if year.to_i.between?(2006,2019)
+        if year.to_i.between?(first.to_i, last.to_i)
             @year = year.to_i
-            if CrimeData.new_search?(@state, @offense)
-                instance = CrimeData.offense_by_year(@state, @offense, @year)
-                display_basic_info(instance)
-                puts "Would you like to view statistics related to victim demographics?"
-                yes_or_no(instance)
-            else
-                Api.call_api(@state, @offense)
-                instance = CrimeData.offense_by_year(@state, @offense, @year)
-                display_basic_info(instance)
-                puts "Would you like to view statistics related to victim demographics?"
-                yes_or_no(instance)
-            end
+            instance = CrimeData.offense_by_year(@state, @offense, @year)
+            display_basic_info(instance)
+            yes_or_no(instance)
         else
-            gather_year
+            gather_year(first, last)
         end
     end
 
@@ -99,9 +106,11 @@ class Cli
             else 
                 gather_year
             end
+        elsif   input == "exit" || input == "Exit" || input == "EXIT"
+            abort("Thank you.")
         else
             "Please enter 'state', 'offense', 'year' or 'victims':"
-            options
+            options(instance)
         end
         
     end
@@ -111,6 +120,7 @@ class Cli
     end
 
     def display_basic_info(instance)
+        binding.pry
         puts "State: #{instance.location}"
         puts "Offense: #{instance.offense_type}"
         puts "Occurances: #{instance.offense_count}"
@@ -118,12 +128,15 @@ class Cli
     end
 
     def yes_or_no(instance)
+        puts "Would you like to view statistics related to victim demographics?"
         input = gets.strip
         if input == "yes" || input == "y" || input == "Yes" || input == "Y" || input == "YES"
             victim_demographics(instance)
         elsif 
             input == "no" || input == "n" || input == "No" || input == "N" || input == "NO"
             options(instance)
+        elsif   input == "exit" || input == "Exit" || input == "EXIT"
+            abort("Thank you.")
         else
             "Please enter 'yes' or 'no'"
             yes_or_no(instance)
@@ -136,45 +149,52 @@ class Cli
         puts "2. Race"
         puts "3. Ethnicity"
         puts "4. Sex"
+        puts "5. All Demographics"
         puts "Choose a category from the list above:"
         input = gets.strip
-        instance_array = [instance.location, instance.year, instance.offense_type, instance.offenses_count]
+        # instance_array = [instance.location, instance.data_year, instance.offense_type, instance.offenses_count]
         if input == "1" || input == "A" || input == "a" || input == "Age" || input == "age" 
-            instance_array << age_range(instance)
-            # return instance array with all searches related to this instance
+            victim_age_range(instance)
         elsif input == "2" || input == "R" || input == "r" || input == "Race" || input == "race"
-            instance_array << victim_race(instance)
-            # return instance array with all searches related to this instance
+            victim_race(instance)
         elsif input == "3" || input == "E" || input == "e" || input == "Ethnicity" || input == "ethnicity"
-            instance_array << victim_ethnicity(instance)
-            # return instance array with all searches related to this instance
+            victim_ethnicity(instance)
         elsif input == "4" || input == "sex" || input == "s" || input == "S" || input == "SEX"
-            instance_array << victim_sex(instance)
-            # return instance array with all searches related to this instance
+            victim_sex(instance)
+        elsif input == "5" || input == "all" || input == "All" || input == "All"
+            all_stats(instance)
+        elsif   input == "exit" || input == "Exit" || input == "EXIT"
+            abort("Thank you.")
         end
     end
 
     def victim_age_range(instance)
         display_basic_info(instance)
-        puts "Victim Age: Unknown: #{instance.unknown}, 0-9yrs: #{instance.range_0_9}, 10-19yrs: #{instance.range_10_19}"
-        puts "Victim Age: 20-29yrs: #{instance.range_20_29}, 30-39yrs: #{instance.range_30_39}, 40-49yrs: #{instance.range_40_49}"
-        puts "Victim Age: 50-59yrs: #{instance.range_50_59}, 60-69yrs: #{instance.range_60_69}, 70-79yrs: #{instance.range_70_79}"
-        puts "Victim Age: 80-89yrs: #{instance.range_80_89}, 90-99yrs: #{instance.range_90_99}"
+        puts "Victim Age: 0-9yrs: #{instance.age_0_9}, 10-19yrs: #{instance.age_10_19}"
+        puts "Victim Age: 20-29yrs: #{instance.age_20_29}, 30-39yrs: #{instance.age_30_39}"
+        puts "Victim Age: 40-49yrs: #{instance.age_40_49}, 50-59yrs: #{instance.age_50_59}"
+        puts "Victim Age: 60-69yrs: #{instance.age_60_69}, 70-79yrs: #{instance.age_70_79}"
+        puts "Victim Age: 80-89yrs: #{instance.age_80_89}, 90-99yrs: #{instance.age_90_99}"
+        yes_or_no(instance)
     end
 
     def victim_race(instance)
         display_basic_info(instance)
         puts "Asian: #{instance.asian}, Native Hawaiian: #{instance.native_hawaiian}, Black: #{instance.black}, White: #{instance.white}"
+        puts "American Indian: #{instance.american_indian}, Unknown Race: #{instance.unknown_race}"
+        yes_or_no(instance)
     end
 
     def victim_ethnicity(instance)
         display_basic_info(instance)
         puts "Victim Ethnicity: Hispanic: #{instance.hispanic}, Non-Hispanic: #{instance.not_hispanic}"
+        yes_or_no(instance)
     end
 
     def victim_sex(instance)
         display_basic_info(instance)
-        puts "Victim Sex: Female: #{instance.female_count}, Male: #{instance.male_count}"
+        puts "Victim Sex: Female: #{instance.female}, Male: #{instance.male}"
+        yes_or_no(instance)
     end
 
     def all_stats(instance)
@@ -183,6 +203,7 @@ class Cli
         victim_race(instance)
         victim_ethnicity(instance)
         victim_sex(instance)
+        yes_or_no(instance)
         end
 end
 

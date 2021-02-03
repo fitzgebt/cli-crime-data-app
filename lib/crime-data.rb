@@ -23,9 +23,20 @@ class CrimeData
     end
 
     def self.offense_by_year(state, offense, year)
-        self.all.find do |instance|
+        var =self.all.find do |instance|
             instance.location == state && instance.offense_type == offense && instance.data_year == year
         end
+        binding.pry
+    end
+
+    def self.list_of_years(state, offense)
+        array = []
+        self.all.find do |instance|
+            if instance.location == state && instance.offense_type == offense
+                array << instance.data_year
+            end
+        end
+
     end
 
 
