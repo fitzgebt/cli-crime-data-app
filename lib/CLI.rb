@@ -127,6 +127,8 @@ class Cli
         else
             "Please enter 'yes' or 'no'"
             yes_or_no(instance)
+        end
+    end
 
 
 end
