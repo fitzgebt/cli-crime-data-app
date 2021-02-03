@@ -7,17 +7,15 @@ class Cli
     def start
         puts "This app gathers information on crimes committed from the FBI's Uniform Crime Report (UCR)."
         puts "Information displayed will have occurred between 2006 and 2019."
-        
         us_states_output           
-        options         # this should loop through CLI instance so user can choose multiple times
-    
+        options
     end
 
     def us_states_output
         states_output = ["Alabama – AL", "Alaska - AK", "Arizona - AZ", "Arkansas - AR", "California - CA", "Colorado - CO", "Connecticut - CT", "Delaware - DE", "Florida - FL", "Georgia - GA", "Hawaii - HI", "Idaho - ID", "Illinois - IL", "Indiana - IN", "Iowa - IA", "Kansas - KS", "Kentucky - KY", "Louisiana - LA", "Maine - ME", "Maryland - MD", "Massachusetts - MA", "Michigan - MI", "Minnesota - MN", "Mississippi - MS", "Missouri - MO", "Montana - MT", "Nebraska - NE", "Nevada - NV", "New Hampshire - NH", "New Jersey - NJ", "New Mexico - NM", "New York - NY", "North Carolina - NC", "North Dakota - ND","Ohio - OH", "Oklahoma - OK", "Oregon - OR", "Pennsylvania - PA", "Rhode Island - RI", "South Carolina - SC", "South Dakota - SD", "Tennessee - TN", "Texas - TX", "Utah - UT", "Vermont - VT", "Virginia - VA", "Washington - WA", "West Virginia - WV", "Wisconsin - WI","Wyoming - WY"]
         states_output.each {|state| puts state}
         puts "Please select a State from the above list:"
-        gather_state  # gets here
+        gather_state  
     end
 
     def gather_state
@@ -26,7 +24,7 @@ class Cli
             @state = state
             offense_output
         else
-            us_states_output # add this loop to list method
+            us_states_output 
         end
     end
 
@@ -39,7 +37,7 @@ class Cli
         offense_types = ["aggravated-assault", "all-other-larceny", "all-other-offenses", "animal-cruelty", "arson", "assisting-or-promoting-prostitution", "bad-checks", "betting", "bribery", "burglary-breaking-and-entering", "counterfeiting-forgery", "credit-card-automated-teller-machine-fraud", "destruction-damage-vandalism-of-property", "driving-under-the-influence", "drug-equipment-violations", "drug-violations", "drunkenness", "embezzlement", "extortion-blackmail", "false-pretenses-swindle-confidence-game", "fondling", "gambling-equipment-violation", "hacking-computer-invasion", "human-trafficking-commerical-sex-acts", "human-trafficking-commerical-involuntary-servitude", "identity-theft", "impersonation", "incest", "intimidation", "justifiable-homicide", "kidnapping-abduction", "motor-vehicle-theft", "murder-and-nonnegligent-manslaughter", "negligent-manslaughter", "operating-promoting-assiting-gambling", "curfew-loitering-vagrancy-violations", "peeping-tom", "pocket-picking", "pornography-obscence-material", "prostitution", "purchasing-prostitution", "purse-snatching", "rape", "robbery", "sexual-assult-with-an-object", "sex-offenses-non-forcible", "shoplifting", "simple-assault", "sodomy", "sports-tampering", "statutory-rape", "stolen-property-offenses", "theft-from-building", "theft-from-coin-operated-machine-or-device", "theft-from-motor-vehicle", "theft-of-motor-vehicle-parts-or-accessories", "theft-from-motor-vehicle", "weapon-law-violation", "welfare-fraud", "wire-fraud", "not-specified", "liquor-law-violations", "crime-against-person", "crime-against-property", "crime-against-society", "assault-offenses", "homicide-offenses", "human-trafficking-offenses", "sex-offenses", "sex-offenses-non-forcible", " fraud-offenses", "larceny-theft-offenses", " drugs-narcotic-offenses", "gambling-offenses", "prostitution-offenses"]
         offense_types.each {|offense| puts offense}
         puts "Please select an offense (exactly as shown above) to view stats on this offense:"
-        gather_offense   # gets here
+        gather_offense   
     end
 
     def gather_offense
@@ -90,7 +88,7 @@ class Cli
     end
 
     def options(instance)
-        puts "Would you like to see another State, Offense, or Year?" 
+        puts "Would you like to see another State, Offense, or Year? (State/Offense/Year)" 
         puts "Type 'exit' to end the program at any time"
         input = gets.strip
         if input == "State" || input == "state" || input == "s" || input == "STATE" || input == "S"
@@ -127,7 +125,7 @@ class Cli
     end
 
     def yes_or_no(instance)
-        puts "Would you like to view statistics related to victim demographics?"
+        puts "Would you like to view statistics related to victim demographics? (y/n)"
         input = gets.strip
         if input == "yes" || input == "y" || input == "Yes" || input == "Y" || input == "YES"
             victim_demographics(instance)

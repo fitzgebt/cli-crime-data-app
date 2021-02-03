@@ -31,13 +31,12 @@ class CrimeData
 
     def self.list_of_years(state, offense)
         array = []
-        self.all.find do |instance|
+        self.all.each do |instance|
             if instance.location == state && instance.offense_type == offense
                 array << instance.data_year
             end
         end
         array
-        binding.pry
     end
 
 
