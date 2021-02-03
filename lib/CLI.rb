@@ -100,7 +100,6 @@ class Cli
         elsif input == "Year" || input == "year" || input == "y" || input == "YEAR" || input == "y" || is_integer?(input) == true
             if is_integer?(input) == true && input.to_i.between?(2006,2019)
                 @year = input
-                # CrimeData.offense_by_year(@year)
             else 
                 gather_year(@first, @last)
             end
@@ -110,7 +109,6 @@ class Cli
             "Please enter 'state', 'offense', 'year' or 'victims':"
             options(instance)
         end
-        
     end
 
     def is_integer?(input)
@@ -149,7 +147,6 @@ class Cli
         puts "5. All Demographics"
         puts "Choose a category from the list above:"
         input = gets.strip
-        # instance_array = [instance.location, instance.data_year, instance.offense_type, instance.offenses_count]
         if input == "1" || input == "A" || input == "a" || input == "Age" || input == "age" 
             victim_age_range(instance)
         elsif input == "2" || input == "R" || input == "r" || input == "Race" || input == "race"
@@ -203,10 +200,3 @@ class Cli
         yes_or_no(instance)
         end
 end
-
-
-
-
-
-# create methods related to specified victim_demographics on instance
-# find way to return all attributed the user has searched for related to the current instance

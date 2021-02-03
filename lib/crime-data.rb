@@ -1,7 +1,7 @@
 class CrimeData
     # attr_accessors defined in initialize
 
-    @@all = []          # all instances for every year of every state/offense combo sent to API
+    @@all = []          
 
     def initialize(hash)
         hash.each do |key, value|
@@ -38,14 +38,4 @@ class CrimeData
         end
         array
     end
-
-
-    
-
-    # need to create methods for calling attributes of the instance?
-
-
 end
-
-
-# 
