@@ -16,16 +16,15 @@ class CrimeData
     end
 
     def self.new_search?(state, offense)
-        self.all.each do |instance|
-            instance.location == state && instance.offense_type == offense ? true : false
+        # binding.pry
+        self.all.find do |instance|
+            instance.location == state && instance.offense_type == offense
         end
     end
 
-    def offense_by_year(state, offense, year)
-        self.all.each do |instance|
-            if instance.location == state && instance.offense_type == offense && instance.data_year == year
-                instance
-            end
+    def self.offense_by_year(state, offense, year)
+        self.all.find do |instance|
+            instance.location == state && instance.offense_type == offense && instance.data_year == year
         end
     end
 
