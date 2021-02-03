@@ -19,15 +19,20 @@ class CrimeData
         self.all.each do |instance|
             instance.location == state && instance.offense_type == offense ? true : false
         end
+    end
+
+    def offense_by_year(state, offense, year)
+        self.all.each do |instance|
+            if instance.location == state && instance.offense_type == offense && instance.data_year == year
+                instance
+            end
+
+            
         end
-
-
-
     end
 
 
-    def display_state_and_offense(state, offense)
-    end
+    
 
     # need to create methods for calling attributes of the instance?
 

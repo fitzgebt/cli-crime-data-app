@@ -8,10 +8,7 @@ class Cli
         puts "This app gathers information on crimes committed from the FBI's Uniform Crime Report (UCR)."
         puts "Information displayed will have occurred between 2006 and 2019."
         
-        us_states_output
-        
-        gather_year      # needs to return the CrimeData instance for specified year
-           
+        us_states_output           
         options         # this should loop through CLI instance so user can choose multiple times
         
 
@@ -32,20 +29,28 @@ class Cli
         offense = gets.strip
         if offense_list(offense) == true
             @offense = offense
-            # Api.call_api(@state, @offense)
-            CrimeData.new_search?(@state, @offense) ? CrimeData.display_state_and_offense(@state, @offense) : Api.call_api(state, offense)
+            CrimeData.new_search?(@state, @offense) ? true : false
+            gather_year            
         else
             offense_output
         end
     end
 
     def gather_year
-        puts "Data for tis offense is available from 2006 - 2019."
+        # add dynamic years for years printed below utilizing CrimeData.new_search? method
+        puts "Data for this offense is available from 2006 - 2019."
         puts "For which year would you like to see data?"
         year = gets.strip
         if year.to_i.between?(2006,2019)
             @year = year
-            # CrimeData.offense_by_year(@year)
+            if CrimeData.new_search?(@state, @offense)
+                instance = CrimeData.offense_by_year(@state, @offense, @year)
+                display_basic_info(instance)
+            else
+                Api.call_api(state, offense)
+                instance = CrimeData.offense_by_year(@state, @offense, @year)
+                display_basic_info(instance)
+            end
         else
             gather_year
         end
@@ -100,6 +105,10 @@ class Cli
         input.length == 4 ? input.to_i.to_s == input : false
     end
 
+    def display_basic_info(instance)
+        binding.pry
+        
+    end
 
 
 end
