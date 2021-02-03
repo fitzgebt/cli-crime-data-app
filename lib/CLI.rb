@@ -58,7 +58,7 @@ class Cli
     end
 
 
-    def collect_years_of_instances(@state, @offense)
+    def collect_years_of_instances(state, offense)
         array = []
         if CrimeData.new_search?(@state, @offense) == true
             array = CrimeData.list_of_years(@state, @offense)
@@ -68,9 +68,9 @@ class Cli
         else
             Api.call_api(@state, @offense)
             array = CrimeData.list_of_years(@state, @offense)
-            first = array.first
-            last = array.last
-            gather_year(first, last)
+            @first = array.first
+            @last = array.last
+            gather_year(@first, @last)
         end
     end
 
@@ -104,7 +104,7 @@ class Cli
                 @year = input
                 # CrimeData.offense_by_year(@year)
             else 
-                gather_year
+                gather_year(@first, @last)
             end
         elsif   input == "exit" || input == "Exit" || input == "EXIT"
             abort("Thank you.")
@@ -120,7 +120,6 @@ class Cli
     end
 
     def display_basic_info(instance)
-        binding.pry
         puts "State: #{instance.location}"
         puts "Offense: #{instance.offense_type}"
         puts "Occurances: #{instance.offense_count}"

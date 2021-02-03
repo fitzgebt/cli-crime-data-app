@@ -26,7 +26,7 @@ class CrimeData
         var =self.all.find do |instance|
             instance.location == state && instance.offense_type == offense && instance.data_year == year
         end
-        binding.pry
+        var
     end
 
     def self.list_of_years(state, offense)
@@ -36,7 +36,8 @@ class CrimeData
                 array << instance.data_year
             end
         end
-
+        array
+        binding.pry
     end
 
 
