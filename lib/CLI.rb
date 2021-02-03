@@ -80,13 +80,16 @@ class Cli
         gather_offense   # gets here
     end
 
-    def options
-        puts "Would you like to see another State, Offense or Year?"
+    def options(instance)
+        puts "Would you like to see another State, Offense, or Year?" 
+        puts "Type 'exit' to end the program at any time"
         input = gets.strip
         if input == "State" || input == "state" || input == "s" || input == "STATE" || input == "S"
             gather_state
         elsif input == "Offense" || input == "offense" || input == "o" || input == "OFFENSE" || input == "O"
             gather_offense
+        elsif input == "victim" || input == "victims" || input == "v" || input == "V" || input == "VICTIM" || input == "info"
+            victim_demographics(instance)
         elsif input == "Year" || input == "year" || input == "y" || input == "YEAR" || input == "y" || is_integer?(input) == true
             if is_integer?(input) == true && input.to_i.between?(2006,2019)
                 @year = input
@@ -95,7 +98,7 @@ class Cli
                 gather_year
             end
         else
-            "Please enter 'state' or 'offense' or 'year':"
+            "Please enter 'state', 'offense', 'year' or 'victims':"
             options
         end
         
@@ -106,9 +109,24 @@ class Cli
     end
 
     def display_basic_info(instance)
-        binding.pry
+        puts "State: #{instance.location}"
+        puts "Offense: #{instance.offense_type}"
+        puts "Year: #{instance.data_year}"
+        puts "Would you like to view statistics related to victim demographics?"
+        yes_or_no(instance)
         
     end
+
+    def yes_or_no(instance)
+        input = gets.strip
+        if input == "yes" || input == "y" || input == "Yes" || input == "Y" || input == "YES"
+            victim_demographics(instance)
+        elsif 
+            input == "no" || input == "n" || input == "No" || input == "N" || input == "NO"
+            options(instance)
+        else
+            "Please enter 'yes' or 'no'"
+            yes_or_no(instance)
 
 
 end
@@ -117,6 +135,6 @@ end
 
 
 
-# need to figure out how to loop through options/results
+
 # need to create CrimeData methods for calling different attrributes about each instance (self.all, all, victim age ranges, etc.)
 # screen record next coding session

@@ -26,8 +26,6 @@ class CrimeData
             if instance.location == state && instance.offense_type == offense && instance.data_year == year
                 instance
             end
-
-            
         end
     end
 
