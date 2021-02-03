@@ -111,6 +111,7 @@ class Cli
     def display_basic_info(instance)
         puts "State: #{instance.location}"
         puts "Offense: #{instance.offense_type}"
+        puts "Occurances: #{instance.offenses_count}"
         puts "Year: #{instance.data_year}"
         puts "Would you like to view statistics related to victim demographics?"
         yes_or_no(instance)
@@ -130,6 +131,31 @@ class Cli
         end
     end
 
+    def victim_demographics(instance)
+        puts "Victim demographics are broken up into categories." 
+        puts "1. Age"
+        puts "2. Race"
+        puts "3. Ethnicity"
+        puts "4. Sex"
+        puts "Choose a category from the list above:"
+        input = gets.strip
+        instance_array = [instance.location, instance.year, instance.offense_type, instance.offenses_count]
+        if input == "1" || input == "A" || input == "a" || input == "Age" || input == "age" 
+            puts "Which age range would you like statistics for?"
+            instance_array << age_range_method(instance)
+            # return instance array with all searches related to this instance
+        elsif input == "2" || input == "R" || input == "r" || input == "Race" || input == "race"
+            instance_array << race_method(instance)
+            # return instance array with all searches related to this instance
+        elsif input == "3" || input == "E" || input == "e" || input == "Ethnicity" || input == "ethnicity"
+            instance_array << ethnicity_method(instance)
+            # return instance array with all searches related to this instance
+        elsif input == "4" || input == "sex" || input == "s" || input == "S" || input == "SEX"
+            instance_array << sex_method(instance)
+            # return instance array with all searches related to this instance
+        end
+
+    end
 
 end
 
@@ -137,6 +163,6 @@ end
 
 
 
-
-# need to create CrimeData methods for calling different attrributes about each instance (self.all, all, victim age ranges, etc.)
+# calling victim_demographics  on instance
+# method for calling different attrributes about instance (self.all, all, victim age ranges, etc.)
 # screen record next coding session
